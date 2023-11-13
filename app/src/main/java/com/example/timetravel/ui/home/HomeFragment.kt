@@ -1,5 +1,6 @@
 package com.example.timetravel.ui.home
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var map: MapView
+      @SuppressLint("SuspiciousIndentation")
       override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
