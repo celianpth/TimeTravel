@@ -16,7 +16,7 @@ class SignUpActivity : AppCompatActivity() {
     lateinit var etConfPass: EditText
     private lateinit var etPass: EditText
     private lateinit var btnSignUp: Button
-    lateinit var tvRedirectLogin: Button
+    lateinit var tvRedirectLogin: TextView
 
     // create Firebase authentication object
     private lateinit var auth: FirebaseAuth

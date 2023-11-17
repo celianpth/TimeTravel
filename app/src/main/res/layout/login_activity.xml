@@ -5,9 +5,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorTimeTravel">
+    android:background="@drawable/background2">
 
     <LinearLayout
+        android:id="@+id/linearLayout2"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -18,14 +19,31 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="108dp"
+        android:text="Login"
+        android:textColor="#FFFFFF"
+        android:textSize="100px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.466"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
         android:id="@+id/tvRedirectSignUp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:layout_marginTop="96dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
         android:gravity="center_horizontal"
-        android:text="don_t_have_an_account_sign_in"
-        android:textColor="#18206F"
+        android:text="Don't have an account yet? Register"
+        android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin"
@@ -35,11 +53,18 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
-        android:layout_marginTop="76dp"
-        android:text="login"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="96dp"
+        android:layout_marginRight="40dp"
+        android:background="@drawable/round_button_2"
+        android:gravity="center"
+        android:text="LOGIN"
+        android:textColor="#FFF"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintHorizontal_bias="0.337"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etPassword" />
 
@@ -48,12 +73,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="92dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
         android:autofillHints="password"
         android:ems="10"
         android:hint="password"
+        android:textColor="#FFFFFF"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:textColorHint="#757575"
+        android:textColorHint="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/etEmailAddress"
         tools:layout_editor_absoluteX="15dp" />
 
@@ -61,14 +89,17 @@
         android:id="@+id/etEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="68dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
         android:autofillHints="emailAddress"
         android:ems="10"
         android:hint="email"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
-        android:textColorHint="#757575"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="15dp" />
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="0dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

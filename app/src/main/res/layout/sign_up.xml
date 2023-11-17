@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorTimeTravel">
+    android:background="@drawable/background2">
 
     <LinearLayout
         android:id="@+id/linearLayout"
@@ -21,19 +21,37 @@
 
     </LinearLayout>
 
-    <Button
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="116dp"
+        android:text="Register"
+        android:textColor="#FFFFFF"
+        android:textSize="100px"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+
+    <TextView
         android:id="@+id/tvRedirectLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:gravity="center_horizontal"
         android:text="@string/already_have_an_account_login"
-        android:textColor="#18206F"
         android:textSize="16sp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnSSigned"
-        app:layout_constraintVertical_bias="0.223"
-        tools:layout_editor_absoluteX="-7dp" />
+        app:layout_constraintVertical_bias="0.255"
+        tools:layout_editor_absoluteX="16dp" />
 
     <Button
         android:id="@+id/btnSSigned"
@@ -41,9 +59,13 @@
         android:layout_height="wrap_content"
         android:layout_margin="15dp"
         android:layout_marginTop="44dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
         android:text="signed"
         app:layout_constraintTop_toBottomOf="@+id/etSConfPassword"
-        tools:layout_editor_absoluteX="20dp" />
+        tools:layout_editor_absoluteX="-14dp"
+        android:background="@drawable/round_button_2"
+        android:gravity="center"/>
 
     <EditText
         android:id="@+id/etSConfPassword"
@@ -55,8 +77,10 @@
         android:hint="confirm_password"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:textColorHint="#757575"
-        android:textColor="@color/black"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:textColorHint="#FFFFFF"
+        android:textColor="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/etSPassword"
         tools:ignore="TextContrastCheck"
         tools:layout_editor_absoluteX="0dp" />
@@ -66,13 +90,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
         android:autofillHints="password"
         android:ems="10"
         android:hint="password"
-        android:textColor="@color/black"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:textColorHint="#757575"
+        android:textColor="#FFFFFF"
+        android:textColorHint="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/etSEmailAddress"
         tools:layout_editor_absoluteX="-9dp" />
 
@@ -80,16 +106,18 @@
         android:id="@+id/etSEmailAddress"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="92dp"
+        android:layout_marginTop="100dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
         android:autofillHints="emailAddress"
         android:ems="10"
         android:hint="email"
         android:inputType="textEmailAddress"
+        android:textColor="#FFFFFF"
         android:minHeight="48dp"
-        android:textColorHint="#757575"
-        android:textColor="@color/black"
-        app:layout_constraintTop_toTopOf="@+id/linearLayout"
-        tools:layout_editor_absoluteX="-9dp" />
+        android:textColorHint="#FFFFFF"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        tools:layout_editor_absoluteX="0dp" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
