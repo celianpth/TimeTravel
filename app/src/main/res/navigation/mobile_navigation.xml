@@ -20,6 +20,13 @@
         android:background="#eee6cf"/>
 
     <fragment
+        android:id="@+id/navigation_sign_up"
+        android:name="com.example.timetravel.SignUpActivity"
+        android:background="#eee6cf"
+        android:label="@string/title_sign_up"
+        tools:layout="@layout/sign_up" />
+
+    <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.timetravel.ui.notifications.NotificationsFragment"
         android:label="@string/title_notifications"
