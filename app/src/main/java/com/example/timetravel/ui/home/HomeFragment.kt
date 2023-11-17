@@ -25,7 +25,7 @@ class HomeFragment : Fragment() {
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var map: MapView
-    @SuppressLint("SuspiciousIndentation")
+      @SuppressLint("SuspiciousIndentation")
       override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
