@@ -1,7 +1,6 @@
 package com.example.timetravel.ui.home
 
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,16 +15,21 @@ import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
+import android.os.Bundle
+import com.example.timetravel.LocationManager
+
 
 class HomeFragment : Fragment() {
 
     private var _binding: FragmentHomeBinding? = null
 
+
     // This property is only valid between onCreateView and
     // onDestroyView.
     private val binding get() = _binding!!
     private lateinit var map: MapView
-      @SuppressLint("SuspiciousIndentation")
+    private lateinit var locationManager: LocationManager
+      //@SuppressLint("SuspiciousIndentation")
       override fun onCreateView(
             inflater: LayoutInflater,
             container: ViewGroup?,
@@ -44,10 +48,18 @@ class HomeFragment : Fragment() {
           map = root.findViewById(R.id.map)
           map.setTileSource(TileSourceFactory.MAPNIK)
           map.setMultiTouchControls(true)
-          map.controller.setZoom(12.0)
 
-          val startPoint = GeoPoint(48.8589, 2.3469) // Default location is Paris
+
+          locationManager = LocationManager(requireActivity())
+
+          // Appeler la méthode pour demander les mises à jour de localisation
+          locationManager.requestLocationUpdates { latitude, longitude ->
+              //println("Latitude: $latitude, Longitude: $longitude")
+
+          val startPoint = GeoPoint(latitude, longitude) // Default location is Paris
           map.controller.setCenter(startPoint)
+          map.controller.setZoom(12.0)
+          }
         return root
     }
 
