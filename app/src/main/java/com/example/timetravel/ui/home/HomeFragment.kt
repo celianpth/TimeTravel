@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.timetravel.LocationManager
@@ -44,19 +45,10 @@ class HomeFragment : Fragment() {
             this.title = title
         }
         map.overlays.add(marker)
-        // Save marker information to Firebase Realtime Database
-        /*val markerData = hashMapOf(
-            "latitude" to latitude,
-            "longitude" to longitude,
-            "name" to title
-        )
-        db.collection("marker_point").add(markerData)*/
-
-
-        //myRef.setValue(latitude)
     }
 
-    @SuppressLint("SuspiciousIndentation")
+
+    //@SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -67,6 +59,7 @@ class HomeFragment : Fragment() {
 
         _binding = FragmentHomeBinding.inflate(inflater, container, false)
         val root: View = binding.root
+        (activity as AppCompatActivity).supportActionBar?.hide()
         // Setting up osmdroid configuration
         Configuration.getInstance()
             .load(context, requireActivity().getSharedPreferences("OpenStreetMap", 0))
@@ -78,15 +71,16 @@ class HomeFragment : Fragment() {
         map.controller.setZoom(18.0)
         val latitudeEditText: EditText = root.findViewById(R.id.latitude)
         val longitudeEditText: EditText = root.findViewById(R.id.longitude)
+        val nameMonumentEditText: EditText = root.findViewById(R.id.name_monument)
         val addMarkerButton: Button = root.findViewById(R.id.add_marker)
-
         val db = FirebaseFirestore.getInstance()
 
         addMarkerButton.setOnClickListener {
             val latitude = latitudeEditText.text.toString().toDoubleOrNull()
             val longitude = longitudeEditText.text.toString().toDoubleOrNull()
+            val name =nameMonumentEditText.text.toString()
             if (latitude != null && longitude != null) {
-                addMarker(latitude,longitude, "Marqueur utilisateur")
+                addMarker(latitude,longitude, name)
                 Toast.makeText(
                     requireContext(),
                     "marker ajouter",
@@ -95,8 +89,9 @@ class HomeFragment : Fragment() {
                 val markerData = hashMapOf(
                     "Latitude" to latitude,
                     "Longitude" to longitude,
-                    "Name" to "Marqueur utilisateur"
+                    "Name" to name
                 )
+                //mise en db des marker de l'utilisateur
                 db.collection("marker").add(markerData).addOnSuccessListener { documentReference ->
                     println("DocumentSnapshot ajouté avec l'ID: ${documentReference.id}")
                     Toast.makeText(
@@ -127,7 +122,37 @@ class HomeFragment : Fragment() {
             val startPoint = GeoPoint(latitude, longitude) // Default location is Paris
             map.controller.setCenter(startPoint)
             addMarker(latitude, longitude, "Ma position")
+
         }
+        //recuperation des marker dans la db
+        db.collection("marker").get()
+            .addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val documents = task.result
+                    if (documents != null) {
+                        for (document in documents) {
+                            val latitude = document.data["Latitude"] as Double
+                            val longitude = document.data["Longitude"] as Double
+                            val title = document.data["Name"] as String
+                            if (-180 < longitude && longitude < 180 && -180 < latitude && latitude < 180) {
+                                addMarker(latitude, longitude, title)
+                            }
+                            else{
+                                //erreur dans la db pour les coordonnées
+                            }
+                        }
+                    } else {
+                        println("Aucun document trouvé")
+                    }
+                } else {
+                    println("Erreur lors de la récupération des documents: ${task.exception}")
+                    Toast.makeText(
+                        requireContext(),
+                        "pas good",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
         return root
     }
 

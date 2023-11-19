@@ -14,14 +14,30 @@
         android:layout_marginTop="0dp" />
 
     <EditText
+        android:id="@+id/name_monument"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/latitude"
+        android:layout_alignParentStart="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginBottom="10dp"
+        android:hint="Name"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <EditText
         android:id="@+id/latitude"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/longitude"
         android:layout_alignParentStart="true"
-        android:layout_marginStart="0dp"
         android:hint="Latitude"
-        android:inputType="numberDecimal" />
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="0dp" />
 
     <EditText
         android:id="@+id/longitude"
@@ -29,12 +45,20 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/add_marker"
         android:hint="Longitude"
-        android:inputType="numberDecimal" />
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        android:inputType="numberDecimal"
+        app:layout_constraintTop_toBottomOf="@+id/latitude"
+        tools:layout_editor_absoluteX="-16dp" />
 
     <Button
         android:id="@+id/add_marker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:text="Ajouter un marqueur"
-        android:layout_alignParentBottom="true"/>
+        android:layout_marginRight="40dp"
+        android:layout_marginLeft="40dp"
+        app:layout_constraintTop_toBottomOf="@+id/longitude"
+        tools:layout_editor_absoluteX="0dp" />
 </RelativeLayout>

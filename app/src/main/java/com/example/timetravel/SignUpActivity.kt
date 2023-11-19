@@ -26,7 +26,7 @@ class SignUpActivity : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sign_up)
-
+        (this as AppCompatActivity).supportActionBar?.hide()
         // View Bindings
         etEmail = findViewById(R.id.etSEmailAddress)
         etConfPass = findViewById(R.id.etSConfPassword)
