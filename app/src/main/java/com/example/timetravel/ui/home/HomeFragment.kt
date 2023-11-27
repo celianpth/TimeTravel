@@ -91,7 +91,7 @@ class HomeFragment : Fragment() {
                     "Longitude" to longitude,
                     "Name" to name
                 )
-                //mise en db des marker de l'utilisateur
+                // Save marker data to the database
                 db.collection("marker").add(markerData).addOnSuccessListener { documentReference ->
                     println("DocumentSnapshot ajouté avec l'ID: ${documentReference.id}")
                     Toast.makeText(
@@ -110,21 +110,20 @@ class HomeFragment : Fragment() {
                     }
 
             } else {
-                // Afficher un message d'erreur à l'utilisateur
+                // Show an error message to the user
             }
         }
         locationManager = LocationManager(requireActivity())
         marker = Marker(map)
-        // Appeler la méthode pour demander les mises à jour de localisation
+        // Call the method to request location updates
         locationManager.requestLocationUpdates { latitude, longitude ->
-            //println("Latitude: $latitude, Longitude: $longitude")
 
-            val startPoint = GeoPoint(latitude, longitude) // Default location is Paris
+            val startPoint = GeoPoint(latitude, longitude)
             map.controller.setCenter(startPoint)
             addMarker(latitude, longitude, "Ma position")
 
         }
-        //recuperation des marker dans la db
+        // Retrieve markers from the database
         db.collection("marker").get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
@@ -135,10 +134,11 @@ class HomeFragment : Fragment() {
                             val longitude = document.data["Longitude"] as Double
                             val title = document.data["Name"] as String
                             if (-180 < longitude && longitude < 180 && -180 < latitude && latitude < 180) {
+                                // Add marker on the map for each retrieved marker from the database
                                 addMarker(latitude, longitude, title)
                             }
                             else{
-                                //erreur dans la db pour les coordonnées
+                                // Error in the database for coordinates
                             }
                         }
                     } else {
