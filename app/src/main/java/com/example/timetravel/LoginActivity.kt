@@ -22,7 +22,7 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.login_activity)
-
+        (this as AppCompatActivity).supportActionBar?.hide()
         // View Binding
         tvRedirectSignUp = findViewById(R.id.tvRedirectSignUp)
         btnLogin = findViewById(R.id.btnLogin)
