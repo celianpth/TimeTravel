@@ -64,6 +64,7 @@ class FriendsRecyclerAdapter : RecyclerView.Adapter<FriendsRecyclerAdapter.ViewH
             // Ajoute un écouteur de clic à l'élément de la liste pour démarrer l'activité de chat
             itemView.setOnClickListener {
                 Intent(itemView.context, ChatActivity::class.java).also {
+                    it.putExtra("friend", friend.name)
                     itemView.context.startActivity(it)
                 }
             }
