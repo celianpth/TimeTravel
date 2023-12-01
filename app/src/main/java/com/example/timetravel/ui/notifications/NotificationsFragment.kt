@@ -1,5 +1,6 @@
 package com.example.timetravel.ui.notifications
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -47,7 +48,9 @@ class NotificationsFragment : Fragment() {
 
         // Ajout d'un écouteur de clic au bouton de chat (encore non implémenté)
         fabChat.setOnClickListener {
-
+            Intent(root.context, UsersSearchActivity::class.java).also {
+                startActivity(it)
+            }
         }
 
         // Création d'une liste d'amis pour l'exemple
