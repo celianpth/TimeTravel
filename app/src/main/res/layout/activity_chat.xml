@@ -10,10 +10,9 @@
         android:id="@+id/rvChat"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="6dp"
+        android:background="@color/colorTimeTravel"
         tools:itemCount="6"
-        tools:listitem="@layout/item_chat_right"
-        />
+        tools:listitem="@layout/item_chat_right" />
 
     <RelativeLayout
         android:id="@+id/layoutChat"
@@ -31,6 +30,8 @@
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:src="@drawable/send"
+            android:backgroundTint="@color/purple_200"
+            app:borderWidth="0dp"
             app:maxImageSize="35dp"/>
 
         <EditText
