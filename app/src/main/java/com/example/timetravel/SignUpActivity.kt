@@ -9,9 +9,11 @@ import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class SignUpActivity : AppCompatActivity() {
+    lateinit var etFullName: EditText
     lateinit var etEmail: EditText
     lateinit var etConfPass: EditText
     private lateinit var etPass: EditText
@@ -28,6 +30,7 @@ class SignUpActivity : AppCompatActivity() {
         setContentView(R.layout.sign_up)
         (this as AppCompatActivity).supportActionBar?.hide()
         // View Bindings
+        etFullName = findViewById(R.id.etFullName)
         etEmail = findViewById(R.id.etSEmailAddress)
         etConfPass = findViewById(R.id.etSConfPassword)
         etPass = findViewById(R.id.etSPassword)
@@ -53,9 +56,10 @@ class SignUpActivity : AppCompatActivity() {
         val email = etEmail.text.toString()
         val pass = etPass.text.toString()
         val confirmPassword = etConfPass.text.toString()
+        val fullName = etFullName.text.toString()
 
         // check pass
-        if (email.isBlank() || pass.isBlank() || confirmPassword.isBlank()) {
+        if (email.isBlank() || pass.isBlank() || confirmPassword.isBlank() || fullName.isBlank()) {
             Toast.makeText(this, "Email and Password can't be blank", Toast.LENGTH_SHORT).show()
             return
         }
@@ -71,7 +75,18 @@ class SignUpActivity : AppCompatActivity() {
         // email and pass in it.
         auth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(this) {
             if (it.isSuccessful) {
-                Toast.makeText(this, "Successfully Singed Up", Toast.LENGTH_SHORT).show()
+                val user = hashMapOf(
+                    "fullname" to fullName,
+                    "email" to email
+                )
+                val currentUser = auth.currentUser
+                // creation de l'utilisateur dans la base de données
+                val db = Firebase.firestore
+                db.collection("users").document(currentUser!!.uid).set(user).addOnSuccessListener {
+                    Toast.makeText(this, "Successfully Singed Up", Toast.LENGTH_SHORT).show()
+                }.addOnFailureListener {
+                    Toast.makeText(this, "Singed Up Failed!", Toast.LENGTH_SHORT).show()
+                }
             } else {
                 Toast.makeText(this, "Singed Up Failed!", Toast.LENGTH_SHORT).show()
             }
