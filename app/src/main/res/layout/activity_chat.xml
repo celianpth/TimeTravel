@@ -3,16 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/colorTimeTravel"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.notifications.ChatActivity">
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvChat"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorTimeTravel"
-        tools:itemCount="6"
-        tools:listitem="@layout/item_chat_right" />
 
     <RelativeLayout
         android:id="@+id/layoutChat"
@@ -47,6 +40,15 @@
             />
 
     </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvChat"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/colorTimeTravel"
+        android:layout_above="@id/layoutChat"
+        tools:itemCount="6"
+        tools:listitem="@layout/item_chat_right" />
 
 
 </RelativeLayout>

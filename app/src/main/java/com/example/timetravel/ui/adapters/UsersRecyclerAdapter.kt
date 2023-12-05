@@ -1,5 +1,6 @@
 package com.example.timetravel.ui.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,10 +8,9 @@ import android.widget.Filter
 import android.widget.Filterable
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.Adapter
 import com.example.timetravel.R
-import com.example.timetravel.ui.models.Message
 import com.example.timetravel.ui.models.User
+import com.example.timetravel.ui.notifications.ChatActivity
 
 class UsersRecyclerAdapter: RecyclerView.Adapter<UsersRecyclerAdapter.ViewHolder>(), Filterable {
 
@@ -30,7 +30,7 @@ class UsersRecyclerAdapter: RecyclerView.Adapter<UsersRecyclerAdapter.ViewHolder
                 if (charSearch.isEmpty()) {
                     usersFilteredList = items
                 } else {
-                    val resultList = items.filter {it.fullName.lowercase().contains(charSearch.lowercase()) }
+                    val resultList = items.filter {it.fullname.lowercase().contains(charSearch.lowercase()) }
                     usersFilteredList = resultList as MutableList<User>
                 }
                 val filterResult = FilterResults()
@@ -62,8 +62,15 @@ class UsersRecyclerAdapter: RecyclerView.Adapter<UsersRecyclerAdapter.ViewHolder
         val tvShortName: TextView = itemView.findViewById(R.id.tvShortName)
         val tvName: TextView = itemView.findViewById(R.id.tvName)
         fun bind(user: User) {
-            tvShortName.text = user.fullName[0].toString()
-            tvName.text = user.fullName
+            tvShortName.text = user.fullname[0].toString()
+            tvName.text = user.fullname
+
+            itemView.setOnClickListener {
+                Intent(itemView.context, ChatActivity::class.java).also {
+                    it.putExtra("friend", user.uuid)
+                    itemView.context.startActivity(it)
+                }
+            }
 
         }
 
