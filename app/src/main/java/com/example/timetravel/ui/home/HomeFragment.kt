@@ -2,6 +2,7 @@ package com.example.timetravel.ui.home
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,8 +47,39 @@ class HomeFragment : Fragment() {
         }
         map.overlays.add(marker)
     }
+    private val handler = Handler()
+    private val locationUpdateInterval = 1000L // Interval in milliseconds (1 seconde)
 
+    private val locationUpdateRunnable = object : Runnable {
+        override fun run() {
+            locationManager.requestLocationUpdates { latitude, longitude ->
+                addMarker(latitude, longitude, "Ma position")
+            }
+            handler.postDelayed(this, locationUpdateInterval)
+        }
+    }
+    private fun startLocationUpdates() {
+        handler.postDelayed(locationUpdateRunnable, locationUpdateInterval)
+        locationManager.requestLocationUpdates { latitude, longitude ->
+            val startPoint = GeoPoint(latitude, longitude)
+            map.controller.setCenter(startPoint)
+            addMarker(latitude, longitude, "Ma position")
+        }
+    }
 
+    private fun stopLocationUpdates() {
+        handler.removeCallbacks(locationUpdateRunnable)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        startLocationUpdates()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        stopLocationUpdates()
+    }
     //@SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -115,14 +147,7 @@ class HomeFragment : Fragment() {
         }
         locationManager = LocationManager(requireActivity())
         marker = Marker(map)
-        // Call the method to request location updates
-        locationManager.requestLocationUpdates { latitude, longitude ->
-
-            val startPoint = GeoPoint(latitude, longitude)
-            map.controller.setCenter(startPoint)
-            addMarker(latitude, longitude, "Ma position")
-
-        }
+        startLocationUpdates()
         // Retrieve markers from the database
         db.collection("marker").get()
             .addOnCompleteListener { task ->
@@ -160,6 +185,7 @@ class HomeFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         map.onDetach()
+        stopLocationUpdates()
         _binding = null
     }
 }
