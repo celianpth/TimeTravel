@@ -11,7 +11,18 @@ import androidx.fragment.app.DialogFragment
 import com.example.timetravel.R
 
 class MapDialogFragment : DialogFragment() {
+    interface OnClickListener {
+        fun onAddMarkerButtonClicked(latitude: Double, longitude: Double)
+    }
+    companion object {
+        const val TAG = "MapDialogFragment"
+    }
 
+    private var clickListener: OnClickListener? = null
+
+    fun setOnClickListener(listener: OnClickListener) {
+        clickListener = listener
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -19,45 +30,20 @@ class MapDialogFragment : DialogFragment() {
     ): View? {
         val root = inflater.inflate(R.layout.dialog_fragment, container, false)
         // utiliser apres pour add un marker plus proprement dans un dialogfragment
-        /*val latitudeEditText: EditText = root.findViewById(R.id.latitude)
+        val latitudeEditText: EditText = root.findViewById(R.id.latitude)
         val longitudeEditText: EditText = root.findViewById(R.id.longitude)
         val addMarkerButton: Button = root.findViewById(R.id.add_marker)
         addMarkerButton.setOnClickListener {
             val latitude = latitudeEditText.text.toString().toDoubleOrNull()
             val longitude = longitudeEditText.text.toString().toDoubleOrNull()
             if (latitude != null && longitude != null) {
-                addMarker(latitude,longitude, "Marqueur utilisateur")
-                Toast.makeText(
-                    requireContext(),
-                    "marker ajouter",
-                    Toast.LENGTH_SHORT
-                ).show()
-                val markerData = hashMapOf(
-                    "Latitude" to latitude,
-                    "Longitude" to longitude,
-                    "Name" to "Marqueur utilisateur"
-                )
-                db.collection("marker").add(markerData).addOnSuccessListener { documentReference ->
-                    println("DocumentSnapshot ajouté avec l'ID: ${documentReference.id}")
-                    Toast.makeText(
-                        requireContext(),
-                        "goog",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                    .addOnFailureListener { e ->
-                        println("Erreur lors de l'ajout du document: $e")
-                        Toast.makeText(
-                            requireContext(),
-                            "pas good",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
+                clickListener?.onAddMarkerButtonClicked(latitude, longitude)
+                dismiss()  // Dismiss the dialog after handling the click
             } else {
-                // Afficher un message d'erreur à l'utilisateur
+                // Show an error message to the user
             }
-        }*/
+        }
+
         // Utilisez latitudeEditText ici
        return root
 

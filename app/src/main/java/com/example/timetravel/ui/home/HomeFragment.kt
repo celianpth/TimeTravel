@@ -80,6 +80,16 @@ class HomeFragment : Fragment() {
         super.onPause()
         stopLocationUpdates()
     }
+    private fun showAddMarkerDialog() {
+        val dialogFragment = MapDialogFragment()
+        dialogFragment.setOnClickListener(object : MapDialogFragment.OnClickListener {
+            override fun onAddMarkerButtonClicked(latitude: Double, longitude: Double) {
+                addMarker(latitude, longitude, "Marqueur utilisateur")
+                // Le reste du code pour ajouter le marqueur dans la base de données
+            }
+        })
+        dialogFragment.show(childFragmentManager, MapDialogFragment.TAG)
+    }
     //@SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -101,30 +111,13 @@ class HomeFragment : Fragment() {
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setMultiTouchControls(true)
         map.controller.setZoom(18.0)
-        val latitudeEditText: EditText = root.findViewById(R.id.latitude)
-        val longitudeEditText: EditText = root.findViewById(R.id.longitude)
-        val nameMonumentEditText: EditText = root.findViewById(R.id.name_monument)
         val addMarkerButton: Button = root.findViewById(R.id.add_marker)
         val db = FirebaseFirestore.getInstance()
 
         addMarkerButton.setOnClickListener {
-            val latitude = latitudeEditText.text.toString().toDoubleOrNull()
-            val longitude = longitudeEditText.text.toString().toDoubleOrNull()
-            val name =nameMonumentEditText.text.toString()
-            if (latitude != null && longitude != null) {
-                addMarker(latitude,longitude, name)
-                Toast.makeText(
-                    requireContext(),
-                    "marker ajouter",
-                    Toast.LENGTH_SHORT
-                ).show()
-                val markerData = hashMapOf(
-                    "Latitude" to latitude,
-                    "Longitude" to longitude,
-                    "Name" to name
-                )
+                showAddMarkerDialog()
                 // Save marker data to the database
-                db.collection("marker").add(markerData).addOnSuccessListener { documentReference ->
+                /*db.collection("marker").add(markerData).addOnSuccessListener { documentReference ->
                     println("DocumentSnapshot ajouté avec l'ID: ${documentReference.id}")
                     Toast.makeText(
                         requireContext(),
@@ -143,7 +136,7 @@ class HomeFragment : Fragment() {
 
             } else {
                 // Show an error message to the user
-            }
+            }*/
         }
         locationManager = LocationManager(requireActivity())
         marker = Marker(map)
