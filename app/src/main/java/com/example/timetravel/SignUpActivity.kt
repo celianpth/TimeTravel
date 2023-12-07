@@ -1,8 +1,11 @@
 package com.example.timetravel
 
+import android.content.Context
 import android.content.Intent
+import android.net.ConnectivityManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Patterns
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -23,6 +26,9 @@ class SignUpActivity : AppCompatActivity() {
     // create Firebase authentication object
     private lateinit var auth: FirebaseAuth
 
+    companion object {
+        const val MIN_PASSWORD_LENGTH = 6
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -69,6 +75,21 @@ class SignUpActivity : AppCompatActivity() {
                 .show()
             return
         }
+        if (!isValidEmail(email)) {
+            Toast.makeText(this, "Invalid email format", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+
+        if (pass.length < MIN_PASSWORD_LENGTH) {
+            Toast.makeText(this, "Password must be at least $MIN_PASSWORD_LENGTH characters", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        if (!isNetworkConnected()) {
+            Toast.makeText(this, "No internet connection", Toast.LENGTH_SHORT).show()
+            return
+        }
         // If all credential are correct
         // We call createUserWithEmailAndPassword
         // using auth object and pass the
@@ -94,5 +115,15 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
+    }
+
+    private fun isNetworkConnected(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val networkInfo = connectivityManager.activeNetworkInfo
+        return networkInfo != null && networkInfo.isConnected
+    }
+
+    fun isValidEmail(email: CharSequence?): Boolean {
+        return !email.isNullOrBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 }
