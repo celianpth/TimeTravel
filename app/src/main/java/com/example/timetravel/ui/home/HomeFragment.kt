@@ -44,15 +44,26 @@ class HomeFragment : Fragment() {
     val db = FirebaseFirestore.getInstance()
     //var myRef = database.getReference("prout")
 
-    private fun addMarker(latitude: Double, longitude: Double, title: String) {
+    private fun addMarker(latitude: Double, longitude: Double, title: String, marker_type:String) {
         val geoPoint = GeoPoint(latitude, longitude)
+        if (marker_type=="Monument") {
             val marker = Marker(map).apply {
                 position = geoPoint
                 this.title = title
                 icon = ContextCompat.getDrawable(requireContext(), R.drawable.favicon)
             }
-        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
-        map.overlays.add(marker)
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            map.overlays.add(marker)
+        }
+        if (marker_type=="Position") {
+            val marker = Marker(map).apply {
+                position = geoPoint
+                this.title = title
+                icon = ContextCompat.getDrawable(requireContext(), R.drawable.position)
+            }
+            marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            map.overlays.add(marker)
+        }
     }
     private val handler = Handler()
     private val locationUpdateInterval = 1000L // Interval in milliseconds (1 seconde)
@@ -60,7 +71,7 @@ class HomeFragment : Fragment() {
     private val locationUpdateRunnable = object : Runnable {
         override fun run() {
             locationManager.requestLocationUpdates { latitude, longitude ->
-                addMarker(latitude, longitude, "Ma position")
+                addMarker(latitude, longitude, "Ma position","Position")
             }
             handler.postDelayed(this, locationUpdateInterval)
         }
@@ -70,7 +81,7 @@ class HomeFragment : Fragment() {
         locationManager.requestLocationUpdates { latitude, longitude ->
             val startPoint = GeoPoint(latitude, longitude)
             map.controller.setCenter(startPoint)
-            addMarker(latitude, longitude, "Ma position")
+            addMarker(latitude, longitude, "Ma position","Position")
         }
     }
 
@@ -91,7 +102,7 @@ class HomeFragment : Fragment() {
         val dialogFragment = MapDialogFragment.newInstance(latitude, longitude)
         dialogFragment.setOnClickListener(object : MapDialogFragment.OnClickListener {
             override fun onAddMarkerButtonClicked(latitude: Double, longitude: Double,name_monument:String) {
-                addMarker(latitude, longitude, name_monument)
+                addMarker(latitude, longitude, name_monument,"Monument")
                 ajoutMarkerDB(latitude, longitude, name_monument)
                 // Le reste du code pour ajouter le marqueur dans la base de données
             }
@@ -177,7 +188,7 @@ class HomeFragment : Fragment() {
                             val title = document.data["Name"] as String
                             if (-180 < longitude && longitude < 180 && -180 < latitude && latitude < 180) {
                                 // Add marker on the map for each retrieved marker from the database
-                                addMarker(latitude, longitude, title)
+                                addMarker(latitude, longitude, title,"Monument")
                             }
                             else{
                                 // Error in the database for coordinates
