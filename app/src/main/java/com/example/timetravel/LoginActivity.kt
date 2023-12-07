@@ -59,8 +59,8 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             } else
-                handleFirebaseAuthException(it.exception)
                 Toast.makeText(this, "Log In failed ", Toast.LENGTH_SHORT).show()
+                handleFirebaseAuthException(it.exception)
         }
     }
 
