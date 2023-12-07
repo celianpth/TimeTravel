@@ -1,6 +1,8 @@
 package com.example.timetravel.ui.home
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
@@ -10,6 +12,7 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.timetravel.LocationManager
@@ -23,6 +26,9 @@ import org.osmdroid.views.overlay.Marker
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import org.osmdroid.events.MapEventsReceiver
+import org.osmdroid.views.overlay.MapEventsOverlay
+import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 
 
 class HomeFragment : Fragment() {
@@ -35,16 +41,17 @@ class HomeFragment : Fragment() {
     private lateinit var map: MapView
     private lateinit var locationManager: LocationManager
     private lateinit var marker: Marker
-
+    val db = FirebaseFirestore.getInstance()
     //var myRef = database.getReference("prout")
-
 
     private fun addMarker(latitude: Double, longitude: Double, title: String) {
         val geoPoint = GeoPoint(latitude, longitude)
-        val marker = Marker(map).apply {
-            position = geoPoint
-            this.title = title
-        }
+            val marker = Marker(map).apply {
+                position = geoPoint
+                this.title = title
+                icon = ContextCompat.getDrawable(requireContext(), R.drawable.favicon)
+            }
+        marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
         map.overlays.add(marker)
     }
     private val handler = Handler()
@@ -80,15 +87,39 @@ class HomeFragment : Fragment() {
         super.onPause()
         stopLocationUpdates()
     }
-    private fun showAddMarkerDialog() {
-        val dialogFragment = MapDialogFragment()
+    private fun showAddMarkerDialog(latitude: Double, longitude: Double) {
+        val dialogFragment = MapDialogFragment.newInstance(latitude, longitude)
         dialogFragment.setOnClickListener(object : MapDialogFragment.OnClickListener {
-            override fun onAddMarkerButtonClicked(latitude: Double, longitude: Double) {
-                addMarker(latitude, longitude, "Marqueur utilisateur")
+            override fun onAddMarkerButtonClicked(latitude: Double, longitude: Double,name_monument:String) {
+                addMarker(latitude, longitude, name_monument)
+                ajoutMarkerDB(latitude, longitude, name_monument)
                 // Le reste du code pour ajouter le marqueur dans la base de données
             }
         })
         dialogFragment.show(childFragmentManager, MapDialogFragment.TAG)
+    }
+    private fun ajoutMarkerDB(latitude: Double, longitude: Double,name_monument:String){
+        val markerData = hashMapOf(
+        "Latitude" to latitude,
+        "Longitude" to longitude,
+        "Name" to name_monument
+        )
+        db.collection("marker").add(markerData).addOnSuccessListener { documentReference ->
+            println("DocumentSnapshot ajouté avec l'ID: ${documentReference.id}")
+            Toast.makeText(
+                requireContext(),
+                "ajout marker db",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+            .addOnFailureListener { e ->
+                println("Erreur lors de l'ajout du document: $e")
+                Toast.makeText(
+                    requireContext(),
+                    "erreur marker ajout",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
     }
     //@SuppressLint("SuspiciousIndentation")
     override fun onCreateView(
@@ -105,42 +136,35 @@ class HomeFragment : Fragment() {
         // Setting up osmdroid configuration
         Configuration.getInstance()
             .load(context, requireActivity().getSharedPreferences("OpenStreetMap", 0))
+        val mapEventsOverlay = MapEventsOverlay(object : MapEventsReceiver {
+            override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
+                // Gérez le clic ici
+                if (p != null) {
+                    // p contient les coordonnées de l'emplacement cliqué
+                    Toast.makeText(requireContext(), "Clic à ${p.latitude}, ${p.longitude}", Toast.LENGTH_SHORT).show()
+                    showAddMarkerDialog(p.latitude, p.longitude)
+                }
+                return true
+            }
 
+            override fun longPressHelper(p: GeoPoint?): Boolean {
+                // Vous pouvez gérer un appui long ici si nécessaire
+                return false
+            }
+        })
         // Initializing map view
         map = root.findViewById(R.id.map)
         map.setTileSource(TileSourceFactory.MAPNIK)
         map.setMultiTouchControls(true)
         map.controller.setZoom(18.0)
-        val addMarkerButton: Button = root.findViewById(R.id.add_marker)
-        val db = FirebaseFirestore.getInstance()
-
-        addMarkerButton.setOnClickListener {
-                showAddMarkerDialog()
-                // Save marker data to the database
-                /*db.collection("marker").add(markerData).addOnSuccessListener { documentReference ->
-                    println("DocumentSnapshot ajouté avec l'ID: ${documentReference.id}")
-                    Toast.makeText(
-                        requireContext(),
-                        "goog",
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-                    .addOnFailureListener { e ->
-                        println("Erreur lors de l'ajout du document: $e")
-                        Toast.makeText(
-                            requireContext(),
-                            "pas good",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-
-            } else {
-                // Show an error message to the user
-            }*/
-        }
+        map.overlays.add(0, mapEventsOverlay)
+        //val addMarkerButton: Button = root.findViewById(R.id.add_marker)
         locationManager = LocationManager(requireActivity())
         marker = Marker(map)
         startLocationUpdates()
+
+
+
         // Retrieve markers from the database
         db.collection("marker").get()
             .addOnCompleteListener { task ->
