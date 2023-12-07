@@ -9,6 +9,9 @@ import android.widget.TextView
 import android.widget.Toast
 
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthException
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
+import com.google.firebase.auth.FirebaseAuthInvalidUserException
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var tvRedirectSignUp: TextView
@@ -56,7 +59,36 @@ class LoginActivity : AppCompatActivity() {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             } else
+                handleFirebaseAuthException(it.exception)
                 Toast.makeText(this, "Log In failed ", Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    private fun handleFirebaseAuthException(exception: Exception?) {
+        when (exception) {
+            is FirebaseAuthInvalidUserException -> {
+                // If the user account doesn't exist
+                Toast.makeText(this, "User not found", Toast.LENGTH_SHORT).show()
+            }
+
+            is FirebaseAuthInvalidCredentialsException -> {
+                // If the password is incorrect
+                Toast.makeText(this, "Invalid credentials", Toast.LENGTH_SHORT).show()
+            }
+
+            is FirebaseAuthException -> {
+                // Handle other Firebase authentication exceptions
+                Toast.makeText(
+                    this,
+                    "Authentication failed: ${exception.message}",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            else -> {
+                // Handle other exceptions
+                Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 }
