@@ -84,6 +84,8 @@ class SignUpActivity : AppCompatActivity() {
                 val db = Firebase.firestore
                 db.collection("users").document(currentUser!!.uid).set(user).addOnSuccessListener {
                     Toast.makeText(this, "Successfully Singed Up", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
                 }.addOnFailureListener {
                     Toast.makeText(this, "Singed Up Failed!", Toast.LENGTH_SHORT).show()
                 }
@@ -91,5 +93,6 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.makeText(this, "Singed Up Failed!", Toast.LENGTH_SHORT).show()
             }
         }
+
     }
 }
