@@ -1,8 +1,8 @@
 <resources>
     <string name="app_name">TimeTravel</string>
     <string name="title_home">Map</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_parametres">Paramètres</string>
+    <string name="title_messagerie">Messagerie</string>
     <string name="title_sign_up">Sign Up</string>
     <string name="already_have_an_account_login">Already Have an account ? Login</string>
     <string name="email" />

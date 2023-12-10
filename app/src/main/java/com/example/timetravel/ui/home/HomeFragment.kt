@@ -77,7 +77,7 @@ class HomeFragment : Fragment() {
             val marker = Marker(map).apply {
                 position = geoPoint
                 this.title = title
-                icon = ContextCompat.getDrawable(requireContext(), R.drawable.position)
+                icon = ContextCompat.getDrawable(requireContext(), R.drawable.position2)
             }
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             map.overlays.add(marker)

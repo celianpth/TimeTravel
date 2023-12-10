@@ -15,7 +15,7 @@
     <fragment
         android:id="@+id/navigation_dashboard"
         android:name="com.example.timetravel.ui.dashboard.DashboardFragment"
-        android:label="@string/title_dashboard"
+        android:label="title_parametres"
         tools:layout="@layout/fragment_dashboard"
         android:background="#eee6cf"/>
 
@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="com.example.timetravel.ui.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_messagerie"
         tools:layout="@layout/fragment_notifications"
         android:background="#eee6cf"/>
 </navigation>
