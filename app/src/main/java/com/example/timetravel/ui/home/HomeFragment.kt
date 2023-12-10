@@ -1,16 +1,13 @@
 package com.example.timetravel.ui.home
 
-import android.annotation.SuppressLint
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
+import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.EditText
 import android.widget.Toast
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -18,17 +15,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.timetravel.LocationManager
 import com.example.timetravel.R
 import com.example.timetravel.databinding.FragmentHomeBinding
+import com.example.timetravel.ui.Monument.MonumentActivity
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 import org.osmdroid.events.MapEventsReceiver
 import org.osmdroid.views.overlay.MapEventsOverlay
-import org.osmdroid.views.overlay.infowindow.MarkerInfoWindow
 
 
 class HomeFragment : Fragment() {
@@ -42,6 +37,7 @@ class HomeFragment : Fragment() {
     private lateinit var locationManager: LocationManager
     private lateinit var marker: Marker
     val db = FirebaseFirestore.getInstance()
+    private var isAlertDialogActive = false
     //var myRef = database.getReference("prout")
 
     private fun addMarker(latitude: Double, longitude: Double, title: String, marker_type:String) {
@@ -53,6 +49,28 @@ class HomeFragment : Fragment() {
                 icon = ContextCompat.getDrawable(requireContext(), R.drawable.favicon)
             }
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
+            marker.setOnMarkerClickListener { _, _ ->
+                isAlertDialogActive = true
+                val builder = AlertDialog.Builder(activity as AppCompatActivity)
+                builder.setTitle("Nom du Monument")
+                    .setMessage("Vous avez cliqué sur : $title")
+                    .setPositiveButton("Aller sur la page") { dialog, _ ->
+                        // L'utilisateur a appuyé sur OK, vous pouvez lancer l'intent ici si nécessaire
+                        dialog.dismiss()
+                        val intent = Intent(requireContext(), MonumentActivity::class.java)
+                        intent.putExtra("monumentTitle", title)
+                        startActivity(intent)
+                        isAlertDialogActive = false
+                    }
+                    .setNegativeButton("Retour") { dialog, _ ->
+                        // L'utilisateur a appuyé sur le bouton "Retour"
+                        dialog.dismiss()
+                        isAlertDialogActive = false
+                    }
+                builder.create().show()
+
+                false  // Retourne true pour indiquer que l'événement a été consommé
+            }
             map.overlays.add(marker)
         }
         if (marker_type=="Position") {
@@ -64,7 +82,9 @@ class HomeFragment : Fragment() {
             marker.setAnchor(Marker.ANCHOR_CENTER, Marker.ANCHOR_CENTER)
             map.overlays.add(marker)
         }
+
     }
+
     private val handler = Handler()
     private val locationUpdateInterval = 1000L // Interval in milliseconds (1 seconde)
 
@@ -150,7 +170,7 @@ class HomeFragment : Fragment() {
         val mapEventsOverlay = MapEventsOverlay(object : MapEventsReceiver {
             override fun singleTapConfirmedHelper(p: GeoPoint?): Boolean {
                 // Gérez le clic ici
-                if (p != null) {
+                if (p != null && !isAlertDialogActive) {
                     // p contient les coordonnées de l'emplacement cliqué
                     Toast.makeText(requireContext(), "Clic à ${p.latitude}, ${p.longitude}", Toast.LENGTH_SHORT).show()
                     showAddMarkerDialog(p.latitude, p.longitude)
@@ -177,7 +197,7 @@ class HomeFragment : Fragment() {
 
 
         // Retrieve markers from the database
-        db.collection("marker").get()
+        /*db.collection("marker").get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val documents = task.result
@@ -205,7 +225,7 @@ class HomeFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
+            }*/
         return root
     }
 

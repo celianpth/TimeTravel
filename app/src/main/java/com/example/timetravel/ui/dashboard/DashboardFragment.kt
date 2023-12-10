@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.timetravel.R
 import com.example.timetravel.databinding.FragmentDashboardBinding
 
+
 // Fragment représentant la section "Dashboard" de l'interface utilisateur
 class DashboardFragment : Fragment() {
 
@@ -21,6 +22,7 @@ class DashboardFragment : Fragment() {
 
     // Lecteur multimédia pour la lecture d'un son
     private var mediaPlayer: MediaPlayer? = null
+
 
     // Fonction appelée lors de la création de la vue du fragment
     override fun onCreateView(
