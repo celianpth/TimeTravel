@@ -22,7 +22,7 @@ class MonumentActivity : AppCompatActivity() {
         // Récupérer la valeur passée en paramètre
         val monumentTitle = intent.getStringExtra("monumentTitle")
         // Retrieve markers from the database
-        db.collection("marker").get()
+        /*db.collection("marker").get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val documents = task.result
@@ -33,7 +33,7 @@ class MonumentActivity : AppCompatActivity() {
                             val title = document.data["Name"] as String
                             if (-180 < longitude && longitude < 180 && -180 < latitude && latitude < 180) {
                                 // Add marker on the map for each retrieved marker from the database
-                                addMarker(latitude, longitude, title,"Monument")
+
                             }
                             else{
                                 // Error in the database for coordinates
@@ -50,7 +50,7 @@ class MonumentActivity : AppCompatActivity() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }
+            }*/
 
 
         // Récupération du bouton de lecture depuis la mise en page et ajout d'un écouteur de clic
