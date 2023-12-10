@@ -58,6 +58,11 @@
             android:name=".ui.Monument.MonumentActivity"
             android:exported="false">
         </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="Paramètres"
+            android:exported="false">
+          </activity>
     </application>
 
 

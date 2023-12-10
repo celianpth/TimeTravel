@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/textViewUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nom d'utilisateur : John Doe"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"/>
+
+    <EditText
+        android:id="@+id/editTextNewUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/textViewUsername"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:hint="Nouveau Nom"/>
+
+    <Button
+        android:id="@+id/buttonModifyUsername"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/editTextNewUsername"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:text="Modifier"
+        android:onClick="modifierNom"/>
+
+    <Button
+        android:id="@+id/buttonLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/buttonModifyUsername"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:text="Déconnexion"
+        android:onClick="deconnexion"/>
+</RelativeLayout>
