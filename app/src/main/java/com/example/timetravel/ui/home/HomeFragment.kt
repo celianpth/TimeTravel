@@ -197,7 +197,7 @@ class HomeFragment : Fragment() {
 
 
         // Retrieve markers from the database
-        /*db.collection("marker").get()
+        db.collection("marker").get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val documents = task.result
@@ -225,7 +225,7 @@ class HomeFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-            }*/
+            }
         return root
     }
 
