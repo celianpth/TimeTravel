@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/background_bien">
+    android:background="@drawable/backgr">
 
     <LinearLayout
         android:id="@+id/linearLayout2"
@@ -26,7 +26,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="108dp"
         android:text="Login"
-        android:textColor="#FFFFFF"
         android:textSize="100px"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.466"
@@ -43,7 +42,6 @@
         android:layout_marginLeft="40dp"
         android:gravity="center_horizontal"
         android:text="Don't have an account yet? Register"
-        android:textColor="#FFFFFF"
         android:textSize="16sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btnLogin"
@@ -61,7 +59,7 @@
         android:background="@drawable/round_button_2"
         android:gravity="center"
         android:text="LOGIN"
-        android:textColor="#FFF"
+        android:textColor="@color/black"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.337"
@@ -78,10 +76,9 @@
         android:autofillHints="password"
         android:ems="10"
         android:hint="password"
-        android:textColor="#FFFFFF"
+        android:textColor="@color/black"
         android:inputType="textPassword"
         android:minHeight="48dp"
-        android:textColorHint="#FFFFFF"
         app:layout_constraintTop_toBottomOf="@+id/etEmailAddress"
         tools:layout_editor_absoluteX="15dp" />
 
@@ -97,8 +94,7 @@
         android:hint="email"
         android:inputType="textEmailAddress"
         android:minHeight="48dp"
-        android:textColor="#FFFFFF"
-        android:textColorHint="#FFFFFF"
+        android:textColor="@color/black"
         app:layout_constraintTop_toBottomOf="@+id/textView"
         tools:layout_editor_absoluteX="0dp" />
 

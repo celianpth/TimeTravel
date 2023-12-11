@@ -177,7 +177,7 @@ class HomeFragment : Fragment() {
                 // Gérez le clic ici
                 if (p != null && !isAlertDialogActive) {
                     // p contient les coordonnées de l'emplacement cliqué
-                    Toast.makeText(requireContext(), "Clic à ${p.latitude}, ${p.longitude}", Toast.LENGTH_SHORT).show()
+                    //Toast.makeText(requireContext(), "Clic à ${p.latitude}, ${p.longitude}", Toast.LENGTH_SHORT).show()
                     showAddMarkerDialog(p.latitude, p.longitude)
                 }
                 return true
@@ -194,7 +194,6 @@ class HomeFragment : Fragment() {
         map.setMultiTouchControls(true)
         map.controller.setZoom(18.0)
         map.overlays.add(0, mapEventsOverlay)
-        //val addMarkerButton: Button = root.findViewById(R.id.add_marker)
         locationManager = LocationManager(requireActivity())
         marker = Marker(map)
         startLocationUpdates()
@@ -223,11 +222,11 @@ class HomeFragment : Fragment() {
 
                     }
                 } else {
-                    Toast.makeText(
+                    /*Toast.makeText(
                         requireContext(),
                         "pas good",
                         Toast.LENGTH_SHORT
-                    ).show()
+                    ).show()*/
                 }
             }
         return root
