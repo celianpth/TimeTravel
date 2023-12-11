@@ -4,9 +4,12 @@ import android.content.Intent
 import android.media.MediaPlayer
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContentProviderCompat.requireContext
+import com.example.timetravel.MainActivity
 import com.example.timetravel.R
 import com.google.firebase.firestore.FirebaseFirestore
 
@@ -14,6 +17,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 class MonumentActivity : AppCompatActivity() {
     private var mediaPlayer: MediaPlayer? = null
     val db = FirebaseFirestore.getInstance()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.fragment_monument)
@@ -21,48 +25,76 @@ class MonumentActivity : AppCompatActivity() {
         (this as AppCompatActivity).supportActionBar?.hide()
         // Récupérer la valeur passée en paramètre
         val monumentTitle = intent.getStringExtra("monumentTitle")
+
+        var nom_monument: TextView = findViewById(R.id.Nom_monument)
+        var dateConstruction: TextView = findViewById(R.id.DateConstruction)
+        var localisation: TextView = findViewById(R.id.Localisation)
+        var style: TextView = findViewById(R.id.Style)
+        var createur: TextView = findViewById(R.id.Createur)
+        var info_sup: TextView = findViewById(R.id.Info_sup)
+        //DateConstruction.text=
+        nom_monument.text = monumentTitle
         // Retrieve markers from the database
-        /*db.collection("marker").get()
+        val markerCollection = db.collection("marker")
+        var latitude: Double? = null
+        var longitude: Double? = null
+// Utilisez la méthode whereEqualTo pour filtrer les documents par le champ "Nom_monument"
+        markerCollection.whereEqualTo("Name", monumentTitle)
+            .get()
             .addOnCompleteListener { task ->
                 if (task.isSuccessful) {
-                    val documents = task.result
-                    if (documents != null) {
-                        for (document in documents) {
-                            val latitude = document.data["Latitude"] as Double
-                            val longitude = document.data["Longitude"] as Double
-                            val title = document.data["Name"] as String
-                            if (-180 < longitude && longitude < 180 && -180 < latitude && latitude < 180) {
-                                // Add marker on the map for each retrieved marker from the database
+                    // La requête a réussi, vous pouvez accéder aux documents
+                    for (document in task.result) {
+                        // Accédez aux champs de chaque document
+                        val dateConstructionDB = document.getString("DateConstruction")
+                        latitude = document.getDouble("Latitude")
+                        longitude = document.getDouble("Longitude")
+                        val ruedb = document.getString("Rue")
+                        val styleDB = document.getString("Style")
+                        val createurDB = document.getString("Createur")
+                        val infoSupplementaireDB = document.getString("Info_sup")
 
-                            }
-                            else{
-                                // Error in the database for coordinates
-                            }
-                        }
-                    } else {
-                        println("Aucun document trouvé")
+                        // Attribuez les valeurs aux TextView correspondants
+                        dateConstruction.text = dateConstructionDB
+                        localisation.text = ruedb
+                        style.text = styleDB
+                        createur.text = createurDB
+                        info_sup.text = infoSupplementaireDB
                     }
                 } else {
-                    println("Erreur lors de la récupération des documents: ${task.exception}")
-                    Toast.makeText(
-                        requireContext(),
-                        "pas good",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    // La requête a échoué, gestion des erreurs
+                    // Vous pouvez afficher un message d'erreur ou effectuer d'autres actions
                 }
-            }*/
+            }
 
 
         // Récupération du bouton de lecture depuis la mise en page et ajout d'un écouteur de clic
         val btnPlay: Button = findViewById(R.id.btnPlaymonument)
         btnPlay.setOnClickListener { playSound() }
+        val btnModify: Button = findViewById(R.id.btnModify)
+        btnModify.setOnClickListener {
+
+            val intent = Intent(this, MonumentModifyActivity::class.java)
+            intent.putExtra("monumentTitle", monumentTitle)
+            intent.putExtra("latitude", latitude) // Ajoutez la latitude
+            intent.putExtra("longitude", longitude) // Ajoutez la longitude
+            startActivity(intent)
+        }
 
     }
 
     // Fonction pour jouer le son avec le lecteur multimédia
     private fun playSound() {
-        mediaPlayer = MediaPlayer.create(this, R.raw.sample)
-        mediaPlayer?.start()
+        if (mediaPlayer != null && mediaPlayer!!.isPlaying) {
+            // Si le MediaPlayer est en cours de lecture, arrêtez-le
+            mediaPlayer?.stop()
+            mediaPlayer?.release()
+            mediaPlayer = null
+        } else {
+            // Si le MediaPlayer n'est pas en cours de lecture, commencez à jouer le son
+            mediaPlayer = MediaPlayer.create(this, R.raw.sample)
+            mediaPlayer?.start()
+        }
     }
 
     // Assurez-vous de libérer les ressources du MediaPlayer lors de la destruction de l'activité

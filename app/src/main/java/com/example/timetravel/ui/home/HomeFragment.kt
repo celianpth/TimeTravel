@@ -133,7 +133,12 @@ class HomeFragment : Fragment() {
         val markerData = hashMapOf(
         "Latitude" to latitude,
         "Longitude" to longitude,
-        "Name" to name_monument
+        "Name" to name_monument,
+        "DateConstruction" to null, // Remplacez "Nouvelle date" par la nouvelle valeur
+        "Localisation" to null, // Remplacez "Nouvelle localisation" par la nouvelle valeur
+        "Style" to null, // Remplacez "Nouveau style" par la nouvelle valeur
+        "Createur" to null, // Remplacez "Nouveau createur" par la nouvelle valeur
+        "Info_sup" to null// Remplacez "Nouvelle information" par la nouvelle valeur
         )
         db.collection("marker").add(markerData).addOnSuccessListener { documentReference ->
             println("DocumentSnapshot ajouté avec l'ID: ${documentReference.id}")
@@ -206,7 +211,7 @@ class HomeFragment : Fragment() {
                             val latitude = document.data["Latitude"] as Double
                             val longitude = document.data["Longitude"] as Double
                             val title = document.data["Name"] as String
-                            if (-180 < longitude && longitude < 180 && -180 < latitude && latitude < 180) {
+                            if (title!= null && -180 < longitude && longitude < 180 && -180 < latitude && latitude < 180) {
                                 // Add marker on the map for each retrieved marker from the database
                                 addMarker(latitude, longitude, title,"Monument")
                             }
@@ -215,10 +220,9 @@ class HomeFragment : Fragment() {
                             }
                         }
                     } else {
-                        println("Aucun document trouvé")
+
                     }
                 } else {
-                    println("Erreur lors de la récupération des documents: ${task.exception}")
                     Toast.makeText(
                         requireContext(),
                         "pas good",

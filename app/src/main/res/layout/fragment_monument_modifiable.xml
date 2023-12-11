@@ -26,44 +26,46 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView2"
         tools:layout_editor_absoluteX="16dp">
 
-        <TextView
-            android:id="@+id/Nom_monument"
+        <EditText
+            android:id="@+id/editTextMonumentName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Arc de triomphe de l'Etoile"
+            android:hint="Nom du monument"
             android:textSize="24sp"
             android:textColor="#000000"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:inputType="text"/>
 
-        <TextView
-            android:id="@+id/DateConstruction"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/editTextConstructionText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/construction_text"
+            android:hint="Date de construction"
+            android:textSize="16sp"
+            android:textColor="#000000"
+            android:inputType="textMultiLine"/>
+
+        <EditText
+            android:id="@+id/editTextLocalisation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Localisation : Charles-de-Gaulle - Paris - France"
             android:textColor="#000000"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/Localisation"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/editStyle"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Localisation : Charles-de-Gaulle - Paris - France"
+            android:hint="Style : Néoclassique"
             android:textColor="#000000"
             android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/Style"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/editCreateur"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Style : Néoclassique"
-            android:textColor="#000000"
-            android:textSize="16sp" />
-
-        <TextView
-            android:id="@+id/Createur"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Commanditaire : Napoléon 1er"
+            android:hint="Commanditaire : Napoléon 1er"
             android:textColor="#000000"
             android:textSize="16sp" />
 
@@ -75,24 +77,23 @@
             android:rating="8.7"
             android:stepSize="0.1" />
 
-        <TextView
-            android:id="@+id/Info_sup"
+        <EditText
+            android:id="@+id/editInformation"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="0dp"
             android:gravity="left"
-            android:text="@string/napoleon"
+            android:hint="@string/napoleon"
             android:textColor="@android:color/black"
-            android:textSize="12sp" />
+            android:textSize="10sp" />
 
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:layout_marginTop="10dp"
             android:background="#000000" />
-
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -112,23 +113,19 @@
                 />
 
             <Button
-                android:id="@+id/btnModify"
+                android:id="@+id/btnSave_monument"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:color="#808080"
-                android:text="Modifier"
+                android:text="Enregistrer"
                 android:textAlignment="center" />
         </LinearLayout>
-
 
         <View
             android:layout_width="match_parent"
             android:layout_height="4dp"
             android:layout_marginTop="5dp"
             android:background="#000000" />
-
-
-
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
